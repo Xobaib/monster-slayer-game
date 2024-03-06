@@ -98,13 +98,6 @@ const app = Vue.createApp({
         this.monsterHealth = 0;
       }
     },
-    winner(value) {
-      if (value === "draw") {
-        this.playerHealth = 100;
-        this.monsterHealth = 100;
-        this.winner = null;
-      }
-    },
   },
 });
 
