@@ -9,6 +9,7 @@ const app = Vue.createApp({
       monsterHealth: 100,
       currentRound: 0,
       winner: null,
+      logMessages: [],
     };
   },
 
@@ -17,27 +18,31 @@ const app = Vue.createApp({
       this.currentRound++;
       const attackValue = getRndomValue(5, 12);
       this.monsterHealth = this.monsterHealth - attackValue;
+      this.addLogMessage("player", "attack", attackValue);
       this.attackPlayer();
     },
     attackPlayer() {
       const attackValue = getRndomValue(8, 15);
       this.playerHealth -= attackValue;
+      this.addLogMessage("monster", "attack", attackValue);
     },
     specialAttackMonster() {
       this.currentRound++;
       this.currentRound <= 3;
       const attackValue = getRndomValue(10, 25);
       this.monsterHealth = this.monsterHealth - attackValue;
+      this.addLogMessage("player", "attack", attackValue);
       this.attackPlayer();
     },
     healPlayer() {
       this.currentRound++;
-      const healVaule = getRndomValue(8, 20);
-      if (this.playerHealth + healVaule > 100) {
+      const healValue = getRndomValue(8, 20);
+      if (this.playerHealth + healValue > 100) {
         this.playerHealth = 100;
       } else {
-        this.playerHealth += healVaule;
+        this.playerHealth += healValue;
       }
+      this.addLogMessage("player", "heal", healValue);
       this.attackPlayer();
     },
     restartGame() {
@@ -45,11 +50,19 @@ const app = Vue.createApp({
       this.playerHealth = 100;
       this.currentRound = 0;
       this.winner = null;
+      this.logMessages = [];
     },
     surrender() {
       this.winner = "monster";
       // THIS ALSO WORKS:
       //   this.playerHealth = 0;
+    },
+    addLogMessage(who, what, value) {
+      this.logMessages.unshift({
+        actionBy: who,
+        actionType: what,
+        actionValue: value,
+      });
     },
   },
 
